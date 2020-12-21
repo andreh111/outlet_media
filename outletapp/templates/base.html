@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<meta name="description" content="Admin, Dashboard, Bootstrap" />
+	<link rel="shortcut icon" sizes="196x196" href="{% static 'assets/images/logo.png'%}">
+	<title>{% block title %}{% endblock %}</title>
+
+	<link rel="stylesheet" href="{% static 'libs/bower/font-awesome/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'libs/bower/material-design-iconic-font.css'%}">
+	<!-- <script src="{% static 'libs/bower/material-design-iconic-font.css'%}"></script> -->
+	<!-- build:css ../assets/css/app.min.css -->
+	<link rel="stylesheet" href="{% static 'libs/bower/animate.css/animate.min.css'%}">
+	<link rel="stylesheet" href="{% static 'libs/bower/perfect-scrollbar/css/perfect-scrollbar.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/css/core.css'%}">
+	<link rel="stylesheet" href="{% static 'assets/css/app.css'%}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<!-- endbuild -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
+	<script src="{% static 'libs/bower/breakpoints.min.js' %}"></script>
+
+	<script>
+	</script>
+	{% block assets %}
+	{% endblock %}
+</head>
+{% block content %}
+
+{%endblock%}
+<!-- build:js ../assets/js/core.min.js -->
+{%block scripts %}
+{% endblock %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
+<script src="{% static 'libs/bower/jquery-ui/jquery-ui.min.js'%}"></script>
+<script src="{% static 'libs/bower/jQuery-Storage-API/jquery.storageapi.min.js'%}"></script>
+<script src="{% static 'libs/bower/bootstrap-sass/assets/javascripts/bootstrap.js'%}"></script>
+<script src="{% static 'libs/bower/jquery-slimscroll/jquery.slimscroll.js'%}"></script>
+<script src="{% static 'libs/bower/perfect-scrollbar/js/perfect-scrollbar.jquery.js'%}"></script>
+<script src="{% static 'libs/bower/PACE/pace.min.js'%}"></script>
+<!-- endbuild -->
+
+<!-- build:js ../assets/js/app.min.js -->
+<script src="{% static 'assets/js/library.js'%}"></script>
+<script src="{% static 'assets/js/plugins.js'%}"></script>
+<script src="{% static 'assets/js/app.js'%}"></script>
+<!-- endbuild -->
+<script src="{% static 'libs/bower/moment/moment.js'%}"></script>
+</body>
+
+</html>

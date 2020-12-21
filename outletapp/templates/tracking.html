@@ -1,0 +1,222 @@
+{% extends "index.html" %} {%load static %} {%block assets%}
+<link rel="stylesheet" type="text/css" href="{%static 'clockpicker.css'%}">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{%static 'clockpicker.js'%}"></script>
+
+
+<script type="text/javascript">
+	$('.clockpicker').clockpicker()
+		.find('input').change(function() {
+			console.log(this.value);
+		});
+	var input = $('#single-input').clockpicker({
+		placement: 'bottom',
+		align: 'left',
+		autoclose: true,
+		'default': 'now'
+	});
+
+	$('.clockpicker-with-callbacks').clockpicker({
+			donetext: 'Done',
+			init: function() {
+				console.log("colorpicker initiated");
+			},
+			beforeShow: function() {
+				console.log("before show");
+			},
+			afterShow: function() {
+				console.log("after show");
+			},
+			beforeHide: function() {
+				console.log("before hide");
+			},
+			afterHide: function() {
+				console.log("after hide");
+			},
+			beforeHourSelect: function() {
+				console.log("before hour selected");
+			},
+			afterHourSelect: function() {
+				console.log("after hour selected");
+			},
+			beforeDone: function() {
+				console.log("before done");
+			},
+			afterDone: function() {
+				console.log("after done");
+			}
+		})
+		.find('input').change(function() {
+			console.log(this.value);
+		});
+
+	// Manually toggle to the minutes view
+	$('#check-minutes').click(function(e) {
+		// Have to stop propagation here
+		e.stopPropagation();
+		input.clockpicker('show')
+			.clockpicker('toggleView', 'minutes');
+	});
+	if (/mobile/i.test(navigator.userAgent)) {
+		$('input').prop('readOnly', true);
+	}
+</script>
+
+
+
+
+{%endblock%} {%block content2 %}
+<section class="app-content">
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="widget">
+				<header class="widget-header">
+					<h4 class="widget-title">Select a user to track</h4>
+				</header>
+				<!-- .widget-header -->
+				<hr class="widget-separator">
+				<div class="widget-body">
+
+					<form action="" method="post" name="myform">
+						{%csrf_token%}
+						<div class="row">
+							<div class="form-group col-md-3">
+								<label for="user">User </label> <select required class="form-control col-sm-9" name="sel">
+									<option value="select">Select a user </option>
+									{%for user in users %}
+									<option value="{{user.user.username}}">{{user.user.username}}</option>
+									{%endfor%}
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="datefrom">Date</label> <input required type="date" class="form-control" name="date1" placeholder="Date From">
+							</div>
+							<!-- .form-group -->
+							<div class="form-group col-md-3">
+								<label for="time1">Time From</label>
+								<div class="input-group clockpicker" data-autoclose="true">
+									<input type="text" name="time1" required class="form-control" value="09:30"> <span class="input-group-addon">
+										<span class="glyphicon glyphicon-time"></span>
+									</span>
+								</div>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="time2">Time To</label>
+								<div class="input-group clockpicker" data-autoclose="true">
+									<input type="text" name="time2" required class="form-control" value="16:30"> <span class="input-group-addon">
+										<span class="glyphicon glyphicon-time"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<script type="text/javascript">
+							$('.clockpicker').clockpicker();
+						</script>
+
+
+
+
+
+
+						<!-- .form-group -->
+						<button type="submit" class="btn btn-primary btn-md">Track</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<hr class="widget-separator">
+		<div class="row text-center">
+			{%if notfound %}
+			<h2>No records Found!</h2>
+			{%endif%}
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="widget">
+					<header class="widget-header">
+						<h4 class="widget-title">Map Marker</h4>
+					</header>
+					<!-- .widget-header -->
+					<hr class="widget-separator">
+					<div class="widget-body">
+						<div id="google-map-2" style="width: 100%; height: 400px;"></div>
+					</div>
+					<!-- .widget-body -->
+				</div>
+				<!-- .widget -->
+			</div>
+			<!-- END column -->
+
+		</div>
+		<!-- .row -->
+</section>
+<script>
+	//map api
+
+	var centerx = {
+		lat: 33.888630,
+		lng: 35.495480
+	};
+	//fill data from database
+	var trackData = []; 
+	{%for temp in track %}
+	var tmpDict = {};
+	tmpDict['lat'] = {{temp.lat}}
+	tmpDict['lng'] = {{temp.long}}
+	centerx = {lat: {{temp.lat}},lng: {{temp.long}}}
+	trackData.push(tmpDict) 
+	{% endfor %}
+
+	//initialize the map
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('google-map-2'), {
+			zoom: 8,
+			center: centerx,
+			mapTypeId: 'terrain'
+		});
+		// if records found
+		if (trackData.length > 0) {
+			var flightPlanCoordinates = trackData;
+
+			var flightPath = new google.maps.Polyline({
+				path: flightPlanCoordinates,
+				geodesic: true,
+				strokeColor: '#FF0000',
+				strokeOpacity: 1.0,
+				strokeWeight: 2
+			});
+			var marker = new google.maps.Marker({
+				position: map.getCenter(),
+				map: map,
+				draggable: true
+			});
+			flightPath.setMap(map);
+		} else { //no records found
+			var myLatLng = {
+				lat: 33.888630,
+				lng: 35.495480
+			};
+
+			map2 = new google.maps.Map(document.getElementById('google-map-2'), {
+				center: myLatLng,
+				zoom: 9,
+				fullscreenControl: true
+			});
+
+			var popupContent = '<strong>This is our Location<br>welcome to you</strong>';
+
+			var infowindow = new google.maps.InfoWindow({
+				content: popupContent,
+				maxWidth: 300
+			});
+		}
+	}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVS389ERE8UOTdMFAiFw76xVCsh5aFSeE&callback=initMap" async defer></script>
+
+{% endblock %}

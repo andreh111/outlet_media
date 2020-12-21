@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+{%load static %}
+{%block content2 %}
+
+<div class="col-md-12">
+	<div class="widget p-lg">
+		<h4 class="m-b-lg">Outlets</h4>
+		<p class="m-b-lg docs">
+			A list of Outlets
+		</p>
+
+		<table class="table">
+			<tr style=" background: #ccc;">
+				<th>#</th>
+				<th>Name</th>
+				<th>Location</th>
+				<th>User</th>
+			</tr>
+			{% for outlet in outlets %}
+			{%if outlet.code %}
+			<tr class="{% cycle 'active' 'info text-color' 'success text-color' 'warning text-color'">
+				<td>{{outlet.code}}</td>
+				<td>{{outlet.name}}</td>
+				<td>{{outlet.location}}</td>
+				<td> {{outlet.user.get_full_name}}</td>
+			</tr>
+			{%endif%}
+			{% endfor %}
+		</table>
+	</div><!-- .widget -->
+</div><!-- END column -->
+
+{% endblock %}

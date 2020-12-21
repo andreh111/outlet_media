@@ -1,0 +1,67 @@
+{% extends "index.html" %}
+{%load static %}
+{%block assets%}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+{%endblock%}
+{%block content2 %}
+<div class="col-sm-12">
+	<div class="widget stats-widget">
+		<div class="widget-body clearfix">
+			<div class="pull-left">
+				<h3 class="widget-title  text-primary"><span class="counter" data-plugin="counterUp">{{users_count}}</span></h3>
+				<small class="text-color">Total Users</small>
+			</div>
+			<span class="pull-right big-icon watermark"><a href="{%url 'signup' %}"><i class="fa fa-plus"></i></a></span>
+		</div>
+		<footer class="widget-footer  bg-primary">
+			<a style="color:white;" href="{% url 'profile' %}">Go to Profile</a>
+			<span class="small-chart pull-right" data-plugin="sparkline" data-options="[1,2,3,5,4], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+		</footer>
+	</div><!-- .widget -->
+</div>
+<div class="col-md-12">
+	<div class="widget p-lg">
+		<h4 class="m-b-lg">Users</h4>
+		<p class="m-b-lg docs">
+			A list of Users
+		</p>
+
+		<table class="table">
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Mobile</th>
+				<th>Role</th>
+				<th>Edit</th>
+			</tr>
+			{% for the_user in users %}
+			<tr>
+				<td style="display:none;" id="usern">{{the_user.user.username}}</td>
+				<td>{{the_user.user.get_full_name}}</td>
+				<td>{{the_user.user.email}}</td>
+				<td>{{the_user.mobile}}</td>
+				<td>{% if the_user.user.is_superuser%}SuperAdmin{% elif the_user.user.is_staff %}Admin{% else %}User{% endif %}</td>
+				<td><i class="fa fa-edit" {% if not the_user.user.is_superuser and not the_user.user.is_staff%}style="cursor:pointer;color:blue" id="visit"{%endif%} ><span style="display:none;">{{the_user.user.username}}</span></i></td>
+			</tr>
+			{% endfor %}
+			<script>
+
+			$(document).on('click','#visit', function(e){
+				e.preventDefault();
+				var newUrl = "{% url 'profile' 'user' %}";
+				var us = $(this).children().text();
+				newUrl = newUrl.replace('user',us );
+				document.location = newUrl;
+			});
+
+			
+			</script>
+		</table>
+	</div><!-- .widget -->
+
+</div><!-- END column -->
+
+{% endblock %}

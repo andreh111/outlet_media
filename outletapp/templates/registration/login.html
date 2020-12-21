@@ -1,0 +1,42 @@
+{% extends "base.html" %} {%load static %} {% block title %}Sign In {%endblock %} {%block assets%}
+<link rel="stylesheet" href="{% static 'assets/css/misc-pages.css'%}">
+
+
+{%endblock%} {%block content%}
+
+<body class="simple-page">
+
+	<div class="simple-page-wrap">
+		<div class="simple-page-logo animated swing">
+			<a href="javascript:void(0)"> 
+				<span><img src="{% static 'assets/svg/outlet.svg' %}" alt="Hassan" height="85px" width="100px"></span>
+			</a>
+		</div>
+		<!-- logo -->
+		<div class="simple-page-form animated flipInY" id="login-form">
+			<h4 class="form-title m-b-xl text-center">Sign In</h4>
+			<form method="post" name="LoginForm" action="/accounts/login/">
+				{% csrf_token%} {% if next %} <input type="hidden" name="next" value="{{ next }}" /> {% endif %}
+				<div class="form-group">
+					<input id="sign-in-email" type="text" class="form-control" placeholder="username" name="username" autofocus>
+				</div>
+
+				<div class="form-group">
+					<input id="sign-in-password" type="password" class="form-control" placeholder="Password" name="password">
+				</div>
+				<input type="submit" class="btn btn-primary" value="SIGN IN">
+			</form>
+		</div>
+		<!-- #login-form -->
+
+		<div class="simple-page-footer">
+			<p>
+				<!-- <a href="password-forget.html">FORGOT YOUR PASSWORD ?</a> -->
+			</p>
+
+		</div>
+		<!-- .simple-page-footer -->
+
+
+	</div>
+	{%endblock%}

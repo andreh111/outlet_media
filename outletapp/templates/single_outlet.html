@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+{%load static %}
+{%block content2 %}
+<div class="profile-header">
+  <div class="profile-cover">
+    <div class="cover-user m-b-lg">
+      <div>
+        <span class="cover-icon invisible" ><i class="fa fa-heart-o"></i></span>
+      </div>
+      <div>
+        <div class="avatar avatar-xl avatar-circle">
+          <a href="javascript:void(0)">
+            <img class="img-responsive" src="{{host.userprofile.profile_pic}}" alt="{{host.username}}" />
+          </a>
+        </div><!-- .avatar -->
+      </div>
+      <div>
+      </div>
+    </div>
+
+
+     	 
+    <div class="text-center">
+      <h4 class="profile-info-name m-b-lg"><a href="javascript:void(0)" class="title-color">{{host.first_name}} {{host.last_name}}</a></h4>
+     		<div class="text-center"><form action="" method="post" enctype="multipart/form-data">
+ 		{%csrf_token%}
+      		<input style="margin:auto; padding:0  0 15px 100px;" type="file" id="profileup" name="profileup" required>
+      		<button class="btn btn-primary btn-outline" type="submit" style="margin-bottom:10px;"><i class="fa fa-upload"></i></button>
+     	 </form>
+     	 </div>	
+      <div>
+        <a href="javascript:void(0)" class="m-r-xl theme-color"><i class="fa fa-bolt m-r-xs"></i>{% if host.is_superuser%}SuperAdmin{% elif host.is_staff %}Admin{% else %}User{% endif %}</a>
+        <a href="javascript:void(0)" class="theme-color"><i class="fa fa-map-marker m-r-xs"></i>{{host.email}}</a>
+        
+      </div>
+
+    </div>
+
+  </div><!-- .profile-cover -->
+
+
+</div><!-- .profile-header -->
+<section class="app-content">
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 text-center">
+      <h3>Update your Password</h3>
+      <div class="m-b-xl">
+      </div>
+      <div class="col-md-10 col-md-offset-1">
+
+        <form action="#" class="form-horizontal" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="control-demo-1" class="col-sm-3">Old Password</label>
+            <div class="col-sm-7">
+              <input type="password" id="id_old_password" name="old_password" class="form-control">
+            </div>
+          </div><!-- .form-group -->
+
+          <div class="form-group">
+            <label for="control-demo-1" class="col-sm-3">New Password</label>
+            <div class="col-sm-7">
+              <input type="password" id="id_new_password1" name="new_password1" class="form-control">
+            </div>
+          </div><!-- .form-group -->
+
+          <div class="form-group">
+            <label for="control-demo-1" class="col-sm-3">New Password Confirmation</label>
+            <div class="col-sm-7">
+              <input type="password" id="id_new_password2" name="new_password2" class="form-control">
+            </div>
+          </div><!-- .form-group -->
+          {% if errs %}
+          <ul class="messages">
+            {% for key,message in errs.items %}
+            <li>{{message}}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <button type="submit" name="savepass" class="btn btn-primary btn-md" style="margin-bottom:5px;">Save changes</button>
+        </form>
+
+      </div>
+</section>
+
+{% endblock %}

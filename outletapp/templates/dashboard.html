@@ -1,0 +1,317 @@
+{% extends "index.html" %} {%load static %} {%block assets%}
+<script>
+	// Google maps
+	var map2;
+
+	function initMap() {
+		var myLatLng = {
+			lat: 33.888630,
+			lng: 35.495480
+		};
+
+		// initialize map2
+		map2 = new google.maps.Map(document.getElementById('google-map-2'), {
+			center: myLatLng,
+			zoom: 9,
+			fullscreenControl: true
+		});
+
+		// the popup pane that appears when the marker is clicked
+		var popupContent = '<strong>This is our Location<br>welcome to you</strong>';
+
+		var infowindow = new google.maps.InfoWindow({
+			content: popupContent,
+			maxWidth: 300
+		});
+
+		// the marker shown at myLatLng (map center)
+		var marker = new google.maps.Marker({
+			position: map2.getCenter(),
+			map: map2,
+			title: 'Welcome To Lebanon',
+			draggable: true
+		});
+		/*
+		// listen for click events on the marker and open the infoWindow
+		marker.addListener('click', function(){
+			infoWindow.open(map2, marker);
+		}); */
+
+		var locations = [
+
+			{%for outlet in outlets %}
+			{%if outlet.lat%}
+			['{{outlet.name}}', {{outlet.lat}}, {{outlet.long}}],
+			{%endif%}
+			{% endfor %}
+		];
+		var infoWindow = new google.maps.InfoWindow({
+			content: name
+		});
+		var marker, i;
+
+		for (i = 0; i < locations.length; i++) {
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				map: map2
+			});
+
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent(locations[i][0]);
+					infowindow.open(map2, marker);
+				}
+			})(marker, i));
+		}
+
+	};
+
+	// End initMap()
+</script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVS389ERE8UOTdMFAiFw76xVCsh5aFSeE&callback=initMap"
+	async defer></script>
+
+
+{%endblock%} {%block content2 %}
+<section class="app-content">
+
+	<div class="row">
+			<div class=" col-sm-12">
+			<div class="widget">
+				<header class="widget-header">
+					<h4 class="widget-title">Quick action</h4>
+				</header>
+				<!-- .widget-header -->
+				<hr class="widget-separator">
+				<div class="row">
+				<div class="widget-body text-center col-sm-4" style="border-right:1px dashed #edf0f5">
+					<div class="big-icon m-b-md watermark">
+						<i class="fa fa-5x fa-plus"></i>
+					</div>
+					<a href="{%url 'signup'%}" class="btn p-v-xl btn-info">Add User</a>
+				</div>
+				<div class="widget-body text-center col-sm-4" style="border-right:1px dashed #edf0f5">
+					<div class="big-icon m-b-md watermark">
+						<i class="fa fa-5x fa fa-map-marked-alt"></i>
+					</div>
+					<a href="{%url 'tracking'%}" class="btn p-v-xl btn-info">Track User</a>
+				</div>
+				<div class="widget-body text-center col-sm-4">
+					<div class="big-icon m-b-md watermark">
+						<i class="fa fa-5x fas fa-file-invoice"></i>
+					</div>
+					<a href="#" class="btn p-v-xl btn-info">Create report</a>
+				</div>								
+				</div>
+				<!-- .widget-body -->
+			</div>
+			<!-- .widget -->
+		</div>
+	
+	
+	
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="widget">
+				<header class="widget-header">
+					<h4 class="widget-title" style="display: inline;">Latest
+						outlets</h4>
+					<a href="{%url 'outlets'%}"><h4 class="widget-title btn btn-primary"
+							style="float: right; display: inline;background-color:#35b8e0;border-color: #35b8e0;color:white">Go to outlets</h4></a>
+				</header>
+				<hr class="widget-separator" />
+				<div class="widget-body">
+					<div class="table-responsive">
+						<table class="table no-cellborder">
+							<thead>
+								<tr>
+									<th>Code</th>
+									<th>Name</th>
+									<th>Location</th>
+									<th colspan="2">User</th>
+									<th>Retail</th>
+								</tr>
+							</thead>
+							<tbody>
+								{%for out in first4 %} 
+								{%if out.code %}
+								<tr>
+									<td class="text-primary">{{out.code}}</td>
+									<td>{{out.name}}</td>
+									<td>{{out.location}}</td>
+									<td colspan="2">{{out.user.first_name}}
+										{{out.user.last_name}}</td>
+									<td><span class="table-icon fa fa-check-square" {%if out.is_retail %}style="color: #35b8e0;"{%endif%}></span></td>
+								</tr>
+								{%endif%} 
+								{%endfor%}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- .widget -->
+		</div>
+		<!-- END column -->
+
+	</div>
+	<!-- .row -->
+
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="widget stats-widget">
+				<div class="widget-body clearfix">
+					<div class="pull-left">
+						<h3 class="widget-title text-danger">
+							<span class="counter" data-plugin="counterUp">{{outlets_count}}</span>
+						</h3>
+						<small class="text-color">Total Outlets</small>
+					</div>
+					<span class="pull-right big-icon watermark"><i
+						class="fa fa-store"></i></span>
+				</div>
+				<footer class="widget-footer bg-danger">
+					<a style="color: white;" href="{% url 'outlets' %}">Go to
+						Outlets</a> <span class="small-chart pull-right"
+						data-plugin="sparkline"
+						data-options="[4,3,5,2,1], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+				</footer>
+			</div>
+			<!-- .widget -->
+		</div>
+
+		<div class="col-sm-4">
+			<div class="widget stats-widget">
+				<div class="widget-body clearfix">
+					<div class="pull-left">
+						<h3 class="widget-title  text-primary">
+							<span class="counter" data-plugin="counterUp">{{users_count}}</span>
+						</h3>
+						<small class="text-color">Total Users</small>
+					</div>
+					<span class="pull-right big-icon watermark"><a
+						href="{%url 'signup' %}"><i class="fa fa-plus"></i></a></span>
+				</div>
+				<footer class="widget-footer  bg-primary">
+					<a style="color: white;" href="{% url 'users' %}">Go to Users</a> <span
+						class="small-chart pull-right" data-plugin="sparkline"
+						data-options="[1,2,3,5,4], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+				</footer>
+			</div>
+			<!-- .widget -->
+		</div>
+
+		<div class="col-sm-4">
+			<div class="widget stats-widget">
+				<div class="widget-body clearfix">
+					<div class="pull-left">
+						<h3 class="widget-title text-success">
+							<span class="counter" data-plugin="counterUp">{{contracts_count}}</span>
+						</h3>
+						<small class="text-color">Total Contracts</small>
+					</div>
+					<span class="pull-right big-icon watermark"><i class="fas fa-file-signature"></i></span>
+				</div>
+				<footer class="widget-footer bg-success">
+					<small>% charge</small> <span class="small-chart pull-right"
+						data-plugin="sparkline"
+						data-options="[2,4,3,4,3], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+				</footer>
+			</div>
+			<!-- .widget -->
+		</div>
+
+	</div>
+	<!-- .row -->
+
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="widget">
+				<header class="widget-header">
+					<h4 class="widget-title">Map Marker</h4>
+				</header>
+				<!-- .widget-header -->
+				<hr class="widget-separator">
+				<div class="widget-body">
+					<div id="google-map-2" style="width: 100%; height: 400px;"></div>
+				</div>
+				<!-- .widget-body -->
+			</div>
+			<!-- .widget -->
+		</div>
+		<!-- END column -->
+
+	</div>
+	<!-- .row -->
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="widget row no-gutter p-lg">
+				<div class="col-md-5 col-sm-5">
+					<div>
+						<h3 class="widget-title fz-lg text-primary m-b-lg">Akkar
+							Media</h3>
+						<p class="m-b-lg">
+							Digital , Print & Marketing<br> Saray Street, Al Rajab
+							Building, Gd Floor<br> Halba, Akkar - Lebanon<br>
+							Support +961 6 964 737<br> Email : support@akkar.media<br>
+							website : www.akkar.media<br>
+						</p>
+					</div>
+				</div>
+
+				<div class="col-md-7 col-sm-7">
+					<div>
+						<div id="lineChart" data-plugin="plot"
+							data-options="
+								[
+									{
+										data: [[1,3.6],[2,3.5],[3,6],[4,4],[5,4.3],[6,3.5],[7,3.6]],
+										color: '#ffa000',
+										lines: { show: true, lineWidth: 6 },
+										curvedLines: { apply: true }
+									},
+									{
+										data: [[1,3.6],[2,3.5],[3,6],[4,4],[5,4.3],[6,3.5],[7,3.6]],
+										color: '#ffa000',
+										points: {show: true}
+									}
+								],
+								{
+									series: {
+										curvedLines: { active: true }
+									},
+									xaxis: {
+										show: true,
+										font: { size: 12, lineHeight: 10, style: 'normal', weight: '100',family: 'lato', variant: 'small-caps', color: '#a2a0a0' }
+									},
+									yaxis: {
+										show: true,
+										font: { size: 12, lineHeight: 10, style: 'normal', weight: '100',family: 'lato', variant: 'small-caps', color: '#a2a0a0' }
+									},
+									grid: { color: '#a2a0a0', hoverable: true, margin: 8, labelMargin: 8, borderWidth: 0, backgroundColor: '#fff' },
+									tooltip: true,
+									tooltipOpts: { content: 'X: %x.0, Y: %y.2',  defaultTheme: false, shifts: { x: 0, y: -40 } },
+									legend: { show: false }
+								}"
+							style="width: 100%; height: 230px;"></div>
+					</div>
+				</div>
+			</div>
+			<!-- .widget -->
+		</div>
+	</div>
+	<!-- .row -->
+
+
+</section>
+<!-- #dash-content -->
+
+
+
+
+{%endblock%}

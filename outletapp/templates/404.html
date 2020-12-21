@@ -1,0 +1,27 @@
+{% extends "base.html" %} {%load static %} {% block title %}Not found{%endblock %} {%block assets%}
+<link rel="stylesheet" href="{% static 'assets/css/misc-pages.css'%}">
+
+
+{%endblock%} {%block content%}
+
+<body class="simple-page">
+	<div id="back-to-home">
+		<a href="{%url 'home' %}" class="btn btn-outline btn-default"><i class="fa fa-home animated zoomIn"></i></a>
+	</div>
+	<div class="simple-page-wrap">
+		<div class="simple-page-logo animated swing">
+			<a href="{%url 'home'%}"> <span><img src="{% static 'assets/svg/outlet.svg' %}" alt="Hassan" height="85px" width="100px"></span>
+			</a>
+		</div>
+		<!-- logo -->
+		<h1 id="_404_title" class="animated shake">404</h1>
+<h5 id="_404_msg" class="animated slideInUp">Oops, an error occur. The page can't be found</h5>
+<div id="_404_form" class="animated slideInUp">
+	<form action="#">
+
+	</form>
+</div>
+
+
+	</div>
+	{%endblock%}

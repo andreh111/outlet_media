@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{%load static %}
+{%block assets %}
+<script src="{% static 'libs/bower/breakpoints.min.js'%}"></script>
+{%endblock%}
+{%block content %}
+
+<body class="menubar-top menubar-light theme-primary">
+  <!--============= start main area -->
+
+  <!-- APP NAVBAR ==========-->
+  <nav id="app-navbar" class="navbar navbar-inverse navbar-fixed-top primary">
+
+    <!-- navbar header -->
+    <div class="navbar-header">
+      <button type="button" id="menubar-toggle-btn" class="navbar-toggle visible-xs-inline-block navbar-toggle-left hamburger hamburger--collapse js-hamburger">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+      </button>
+
+      <button type="button" class="navbar-toggle navbar-toggle-right collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="zmdi zmdi-hc-lg zmdi-more"></span>
+      </button>
+
+      <button type="button" class="navbar-toggle navbar-toggle-right collapsed" data-toggle="collapse" data-target="#navbar-search" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="zmdi zmdi-hc-lg zmdi-search"></span>
+      </button>
+
+      <a href="{%url 'home'%}" class="navbar-brand">
+        <span class="brand-icon"><img src="{% static 'assets/svg/outlet.svg' %}" alt="Hassan" height="85px" width="100px"></span>
+      </a>
+    </div><!-- .navbar-header -->
+
+    <div class="navbar-container container-fluid">
+      <div class="collapse navbar-collapse" id="app-navbar-collapse">
+        <ul class="nav navbar-toolbar navbar-toolbar-left navbar-left">
+          <li class="hidden-float hidden-menubar-top">
+            <a href="javascript:void(0)" role="button" id="menubar-fold-btn" class="hamburger hamburger--arrowalt is-active js-hamburger">
+              <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+            </a>
+          </li>
+          <li>
+            <h5 class="page-title hidden-menubar-top">Dashboard</h5>
+          </li>
+        </ul>
+
+      </div>
+    </div><!-- navbar-container -->
+  </nav>
+  <!--========== END app navbar -->
+
+  <!-- APP ASIDE ==========-->
+  <aside id="menubar" class="menubar light">
+    <div class="app-user">
+      <div class="media">
+        <div class="media-left">
+          <div class="avatar avatar-md avatar-circle">
+            <a href="javascript:void(0)"><img class="img-responsive" src="{{request.user.userprofile.profile_pic}}" alt="No pic" /></a>
+          </div><!-- .avatar -->
+        </div>
+        <div class="media-body">
+          <div class="foldable">
+            <ul>
+              <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu animated flipInY">
+                  <li>
+                    <a class="text-color" href="{%url 'profile' %}">
+                      <span class="m-r-xs"><i class="fa fa-user"></i></span>
+                      <span>{{request.user.first_name}} {{request.user.last_name}} </span><br>
+                      <span class="m-r-xs"><i class=""></i></span>
+                      <small>Visit Profile</small>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="text-color" href="{%url 'home' %}">
+                      <span class="m-r-xs"><i class="fa fa-home"></i></span>
+                      <span>Home</span>
+                    </a>
+                  </li>
+
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a class="text-color" href="{%url 'logout' %}">
+                      <span class="m-r-xs"><i class="fa fa-power-off"></i></span>
+                      <span>LogOut</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- .media -->
+    </div><!-- .app-user -->
+
+    <div class="menubar-scroll">
+      <div class="menubar-scroll-inner">
+        <ul class="app-menu">
+          <li class="has-submenu {%if request.resolver_match.url_name == 'home'%}active{%endif%}">
+            <a href="{%url 'home' %}" class="submenu-toggle ">
+<i class="fas fa-2x fa-columns "></i>          
+    <span class="menu-text">Dashboard</span>
+              <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+            </a>
+          </li>
+
+          <li class="has-submenu {%if request.resolver_match.url_name == 'outlets'%}active{%endif%}">
+            <a href="{%url 'outlets'%}" class="submenu-toggle">
+              <i class="fa fa-store fa-2x"></i>
+              <span class="menu-text">Outlets</span>
+              <span class="label label-warning menu-label">2</span>
+              <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+            </a>
+          </li>
+
+          <li class="has-submenu {%if request.resolver_match.url_name == 'users'%}active{%endif%}">
+            <a href="{%url 'users'%}" class="submenu-toggle">
+              <i class="  fa fa-users fa-2x"></i>
+              <span class="menu-text">Users</span>
+              <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+            </a>
+          </li>
+
+          <li class="has-submenu {%if request.resolver_match.url_name == 'tracking'%}active{%endif%}">
+            <a href="{%url 'tracking'%}" class="submenu-toggle">
+              <i class=" fa fa-map-marker-alt fa-2x"></i>
+              <span class="menu-text">Tracking</span>
+              <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+            </a>
+          </li>
+
+          <li class="{%if request.resolver_match.url_name == 'reports'%}active{%endif%}">
+            <a href="{%url 'reports'%}">
+<i class="fas fa-file-invoice fa-2x"></i>            
+  <span class="menu-text">Reports</span>
+            </a>
+          </li>
+          <li class="{%if request.resolver_match.url_name == 'support'%}active{%endif%}">
+            <a href="{%url 'reports'%}">
+<i class="far fa-life-ring fa-2x"></i>          
+    <span class="menu-text">Support</span>
+            </a>
+          </li>
+
+        </ul><!-- .app-menu -->
+      </div><!-- .menubar-scroll-inner -->
+    </div><!-- .menubar-scroll -->
+  </aside>
+  <!--========== END app aside -->
+
+  <!-- navbar search -->
+  <div id="navbar-search" class="navbar-search collapse">
+    <div class="navbar-search-inner">
+      <form action="#">
+        <span class="search-icon"><i class="fa fa-search"></i></span>
+        <input class="search-field" type="search" placeholder="search..." />
+      </form>
+      <button type="button" class="search-close" data-toggle="collapse" data-target="#navbar-search" aria-expanded="false">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <div class="navbar-search-backdrop" data-toggle="collapse" data-target="#navbar-search" aria-expanded="false"></div>
+  </div><!-- .navbar-search -->
+
+  <!-- APP MAIN ==========-->
+  <main id="app-main" class="app-main">
+    <div class="wrap">
+      {%block content2 %}
+
+      {%endblock%}
+    </div><!-- .wrap -->
+    <!-- APP FOOTER -->
+    <div class="wrap p-t-0">
+      <footer class="app-footer">
+        <div class="clearfix">
+          <ul class="footer-menu pull-right">
+            <li><a href="javascript:void(0)">support</a></li>
+            <li><a href="javascript:void(0)">FAQ <i class="fa fa-angle-up m-l-md"></i></a></li>
+          </ul>
+          <div class="copyright pull-left">Made with <i style="color:#eb4d4b;" class="fa fa-heart "> </i> by <a href="http://www.Akkar.Media" target="_blank">Akkar.Media</a>
+            <a href="https://www.facebook.com/akkarmedia" target="_blank"><i class="zmdi zmdi-facebook zmdi-hc-fw"></i></a>
+            <a href="https://www.instagram.com/akkarmedia/" target="_blank"><i class="zmdi zmdi-instagram zmdi-hc-fw"></i></a>
+            <a href="https://twitter.com/akkarmedia" target="_blank"><i class="zmdi zmdi-twitter zmdi-hc-fw"></i></a>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- /#app-footer -->
+  </main>
+  <!--========== END app main -->
+  <!-- SIDE PANEL -->
+
+  {%endblock%}

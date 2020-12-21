@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{%load static %}
+{% block title %}Sign Up {% endblock %}
+{%block assets%}
+<link rel="stylesheet" href="{% static 'assets/css/misc-pages.css'%}">
+
+
+{%endblock%}
+{%block content%}
+
+<body class="simple-page">
+	<div id="back-to-home">
+		<a href="{%url 'home' %}" class="btn btn-outline btn-default"><i class="fa fa-home animated zoomIn"></i></a>
+	</div>
+	<div class="simple-page-wrap">
+		<div class="simple-page-logo animated swing">
+			<a href="{%url 'home' %}">
+				<span><img src="{% static 'assets/svg/outlet.svg' %}" alt="Hassan" height="85px" width="100px"></span>
+			</a>
+		</div><!-- logo -->
+
+		<div class="simple-page-form animated flipInY" id="signup-form">
+			<h4 class="form-title m-b-xl text-center">Sign Up a new User</h4>
+			<form method="post" action="/signup">
+				{% csrf_token%}
+
+
+				<div class="form-group {% if form.username.errors %} has-error {% endif %}">
+					<input id="id_username" type="text" class="form-control" placeholder="UserName" name="username">
+					<div class='error' style="color: red">{{form.errors.username}}</div>
+				</div>
+
+
+				<div class="form-group">
+					<input name="first_name" id="id_first_name" type="text" class="form-control" placeholder="First Name">
+				</div>
+				<div class="form-group">
+					<input name="last_name" id="id_last_name" type="text" class="form-control" placeholder="Last Name">
+				</div>
+				<div class="form-group {% if form.email.errors %} has-error {% endif %}">
+					<input name="email" id="id_email" type="email" class="form-control" placeholder="Email">
+					<div class='error' style="color: red">{{form.errors.email}}</div>
+
+				</div>
+
+				<div class="form-group {% if form.password1.errors %} has-error {% endif %}">
+					<input id="id_password1" name="password1" type="password" class="form-control" placeholder="Password">
+					<div class='error' style="color: red">{{form.errors.password1}}</div>
+				</div>
+
+
+				<div class="form-group {% if form.password2.errors %} has-error {% endif %}">
+					<input id="id_password2" name="password2" type="password" class="form-control" placeholder="Password Confirmation">
+					<div class='error' style="color: red">{{form.errors.password2}}</div>
+				</div>
+
+
+				<div class="form-group {% if form.mobile.errors %} has-error {% endif %}">
+					<input id="id_mobile" name="mobile" type="tel" class="form-control" placeholder="Mobile">
+					<div class='error' style="color: red">{{form.errors.mobile}}</div>
+				</div>
+
+
+				<div class="form-group m-b-xl">
+					<div class="checkbox checkbox-primary">
+						<input type="checkbox" id="id_is_staff" name="is_staff" />
+						<label for="admin">Admin Priviliges ?</label>
+					</div>
+				</div>
+				<input type="submit" class="btn btn-primary" value="SIGN UP">
+			</form>
+		</div><!-- #login-form -->
+
+
+
+	</div><!-- .simple-page-wrap -->
+	{%endblock%}
